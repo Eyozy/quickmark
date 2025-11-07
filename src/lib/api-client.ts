@@ -3,7 +3,7 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://your-domain.com'
   : 'http://localhost:3000';
 
-const API_KEY = 'quickmark-secure-api-2024';
+const API_KEY = 'quickmark-secure-api-2025';
 
 interface Bookmark {
   id: string;
