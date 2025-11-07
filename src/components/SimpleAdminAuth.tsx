@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { Lock, Eye, EyeOff } from "lucide-react";
 
-interface AdminAuthProps {
+interface SimpleAdminAuthProps {
   onAuthenticated: () => void;
 }
 
-export default function AdminAuth({ onAuthenticated }: AdminAuthProps) {
+export default function SimpleAdminAuth({ onAuthenticated }: SimpleAdminAuthProps) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,8 +25,8 @@ export default function AdminAuth({ onAuthenticated }: AdminAuthProps) {
     setError("");
 
     try {
-      // 调用 API 验证密码
-      const response = await fetch("/api/auth/verify-admin", {
+      // 调用简化登录 API
+      const response = await fetch("/api/auth/simple-login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export default function AdminAuth({ onAuthenticated }: AdminAuthProps) {
         setError(data.error || "密码错误");
       }
     } catch (error) {
-      setError("验证失败，请重试");
+      setError("网络错误，请重试");
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +58,7 @@ export default function AdminAuth({ onAuthenticated }: AdminAuthProps) {
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Lock className="w-8 h-8 text-blue-600" />
             </div>
-            <h1 className="text-2xl font-medium text-gray-900 mb-2">管理员验证</h1>
+            <h1 className="text-2xl font-medium text-gray-900 mb-2">管理员登录</h1>
             <p className="text-gray-600">请输入管理员密码以继续</p>
           </div>
 
@@ -111,7 +111,7 @@ export default function AdminAuth({ onAuthenticated }: AdminAuthProps) {
                   <span>验证中...</span>
                 </>
               ) : (
-                <span>验证身份</span>
+                <span>登录</span>
               )}
             </button>
           </form>

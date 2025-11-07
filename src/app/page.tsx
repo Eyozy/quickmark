@@ -2,9 +2,8 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { Search, RotateCcw, ExternalLink } from "lucide-react";
-import { supabase } from '@/lib/supabaseClient';
+import { getBookmarks } from '@/lib/api-client';
 import { getFaviconUrl, getFaviconFallback } from '@/lib/favicon-utils';
-import { DEFAULT_USER_ID } from '@/lib/constants';
 
 interface Bookmark {
   id: string;
@@ -21,7 +20,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  // 从 Supabase 加载书签数据
+  // 从 API 加载书签数据
   const loadBookmarks = async (isRefresh = false) => {
     try {
       if (isRefresh) {
@@ -30,29 +29,21 @@ export default function Home() {
         setLoading(true);
       }
 
-      const { data, error } = await supabase
-        .from('bookmarks')
-        .select('*')
-        .eq('user_id', DEFAULT_USER_ID) // 只获取默认用户的书签
-        .order('created_at', { ascending: false });
+      const data = await getBookmarks();
+      setBookmarks(data);
 
-      if (error) {
-        console.error('加载书签失败：', error);
-        // 如果加载失败，显示一些示例数据
-        setBookmarks([
-          {
-            id: "demo-1",
-            title: "GitHub",
-            url: "https://github.com",
-            description: "Where the world builds software",
-            favicon: "https://github.com/favicon.ico"
-          }
-        ]);
-      } else {
-        setBookmarks(data || []);
-      }
     } catch (error) {
-      console.error('加载书签出错：', error);
+      console.error('加载书签失败：', error);
+      // 如果加载失败，显示一些示例数据
+      setBookmarks([
+        {
+          id: "demo-1",
+          title: "GitHub",
+          url: "https://github.com",
+          description: "Where the world builds software",
+          favicon: "https://github.com/favicon.ico"
+        }
+      ]);
     } finally {
       setLoading(false);
       setRefreshing(false);

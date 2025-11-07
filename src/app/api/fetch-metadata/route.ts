@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     // 获取网页内容
     const response = await fetch(url, {
       headers,
-      signal: AbortSignal.timeout(10000) // 10秒超时
+      signal: AbortSignal.timeout(10000) // 10 秒超时
     });
 
     if (!response.ok) {
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       const domain = urlObj.hostname;
 
       // 使用 favicon.im 服务获取图标
-      // 格式: https://favicon.im/google.com
+      // 格式：https://favicon.im/google.com
       favicon = `https://favicon.im/${domain}`;
 
       // 如果是 localhost 或 IP 地址，使用特殊处理

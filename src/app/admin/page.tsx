@@ -18,13 +18,12 @@ import {
   Grid3X3,
   List
 } from "lucide-react";
-import { supabase } from '@/lib/supabaseClient';
-import AdminAuth from '@/components/AdminAuth';
+import SimpleAdminAuth from '@/components/SimpleAdminAuth';
 import {
-  DEFAULT_USER_ID,
   STORAGE_KEYS,
   API_CONFIG
 } from '@/lib/constants';
+import { getBookmarks, addBookmark, deleteBookmark } from '@/lib/api-client';
 import { getFaviconUrl, getFaviconFallback, getFaviconInfo } from '@/lib/favicon-utils';
 
 interface Bookmark {
@@ -183,22 +182,13 @@ export default function AdminPage() {
   // ===== 数据获取函数 =====
 
   /**
-   * 从 Supabase 加载书签列表
+   * 从 API 加载书签列表
    */
   const loadBookmarks = async () => {
     setIsLoadingBookmarks(true);
     try {
-      const { data, error } = await supabase
-        .from('bookmarks')
-        .select('*')
-        .eq('user_id', DEFAULT_USER_ID)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        setAutoMessage('❌ 加载书签列表失败', 'error');
-      } else {
-        setBookmarks(data || []);
-      }
+      const data = await getBookmarks();
+      setBookmarks(data);
     } catch (error) {
       setAutoMessage('❌ 加载书签列表出错', 'error');
     } finally {
@@ -259,17 +249,12 @@ export default function AdminPage() {
       }
 
       // 保存到数据库
-      const { error } = await supabase
-        .from('bookmarks')
-        .insert([{
-          title: title,
-          url: url,
-          description: description,
-          favicon: favicon,
-          user_id: DEFAULT_USER_ID
-        }]);
-
-      if (error) throw error;
+      await addBookmark({
+        title: title,
+        url: url,
+        description: description,
+        favicon: favicon
+      });
 
       // 成功处理
       setAutoMessage('✅ 书签添加成功！', 'success');
@@ -324,12 +309,10 @@ export default function AdminPage() {
 
     setIsDeleting(true);
     try {
-      const { error } = await supabase
-        .from('bookmarks')
-        .delete()
-        .in('id', Array.from(selectedBookmarks));
-
-      if (error) throw error;
+      // 批量删除书签
+      for (const id of Array.from(selectedBookmarks)) {
+        await deleteBookmark(id);
+      }
 
       setAutoMessage(`✅ 已删除 ${selectedBookmarks.size} 个书签`, 'success');
       setSelectedBookmarks(new Set());
@@ -342,51 +325,12 @@ export default function AdminPage() {
     }
   };
 
-  /**
-   * 开始编辑书签
-   */
-  const startEditing = (bookmark: Bookmark) => {
-    setEditingBookmark({
-      id: bookmark.id,
-      title: bookmark.title,
-      url: bookmark.url,
-      description: bookmark.description || ''
-    });
+  // 注意：编辑功能暂时禁用，因为当前 API 不支持更新操作
+  const startEditing = (_bookmark: Bookmark) => {
+    setAutoMessage('⚠️ 编辑功能暂时禁用，请删除后重新添加', 'info');
   };
-
-  /**
-   * 保存编辑的书签
-   */
-  const saveEdit = async () => {
-    if (!editingBookmark) return;
-
-    try {
-      const { error } = await supabase
-        .from('bookmarks')
-        .update({
-          title: editingBookmark.title,
-          url: editingBookmark.url,
-          description: editingBookmark.description
-        })
-        .eq('id', editingBookmark.id);
-
-      if (error) throw error;
-
-      setAutoMessage('✅ 书签已更新', 'success');
-      setEditingBookmark(null);
-      loadBookmarks();
-
-    } catch (error) {
-      setAutoMessage('❌ 更新失败：' + (error instanceof Error ? error.message : '未知错误'), 'error');
-    }
-  };
-
-  /**
-   * 取消编辑
-   */
-  const cancelEdit = () => {
-    setEditingBookmark(null);
-  };
+  const saveEdit = () => {};
+  const cancelEdit = () => {};
 
   // ===== 数据处理 =====
 
@@ -653,7 +597,7 @@ export default function AdminPage() {
 
   // 如果未通过身份验证，显示登录界面
   if (!isAuthenticated) {
-    return <AdminAuth onAuthenticated={handleAuthenticated} />;
+    return <SimpleAdminAuth onAuthenticated={handleAuthenticated} />;
   }
 
   return (
