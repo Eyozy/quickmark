@@ -36,7 +36,7 @@
 
 1. **克隆项目**
 ```bash
-git clone https://github.com/your-username/quickmark.git
+git clone https://github.com/Eyozy/quickmark.git
 cd quickmark
 ```
 
@@ -49,11 +49,12 @@ npm install
 
 创建 `.env.local` 文件：
 ```env
-# Supabase 配置
+# Supabase 项目 URL
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+# Supabase 匿名密钥
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-# 管理员密码
+# 管理后台密码
 ADMIN_PASSWORD=your_admin_password
 ```
 
@@ -127,16 +128,6 @@ quickmark/
 ├── tailwind.config.ts    # Tailwind 配置
 └── README.md            # 项目文档
 ```
-
-## 🔧 配置选项
-
-### 环境变量
-
-| 变量名 | 描述 | 必需 |
-|--------|------|------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 项目 URL | ✅ |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 匿名密钥 | ✅ |
-| `ADMIN_PASSWORD` | 管理后台密码 | ✅ |
 
 ### 自定义配置
 
