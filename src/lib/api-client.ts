@@ -1,7 +1,6 @@
 // API 客户端 - 替代直接的 Supabase 客户端
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://your-domain.com'
-  : 'http://localhost:3000';
+// 动态获取当前网站的域名
+const API_BASE_URL = typeof window !== 'undefined' ? window.location.origin : '';
 
 const API_KEY = 'quickmark-secure-api-2025';
 
