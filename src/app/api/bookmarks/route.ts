@@ -13,7 +13,7 @@ if (!supabaseUrl || !supabaseServiceKey) {
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 // API 密钥验证（简单版本）
-const API_KEY = 'quickmark-secure-api-2024';
+const API_KEY = 'quickmark-secure-api-2025';
 
 function verifyApiKey(request: NextRequest): boolean {
   const apiKey = request.headers.get('x-api-key');
