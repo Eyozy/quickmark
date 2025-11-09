@@ -23,7 +23,7 @@ import {
   STORAGE_KEYS,
   API_CONFIG
 } from '@/lib/constants';
-import { getBookmarks, addBookmark, deleteBookmark } from '@/lib/api-client';
+import { getBookmarks, addBookmark, updateBookmark, deleteBookmark } from '@/lib/api-client';
 import { getFaviconUrl, getFaviconFallback, getFaviconInfo } from '@/lib/favicon-utils';
 
 interface Bookmark {
@@ -35,11 +35,11 @@ interface Bookmark {
   created_at?: string;
 }
 
-interface EditingBookmark {
-  id: string;
-  title: string;
-  url: string;
-  description?: string;
+interface EditingBookmark extends Bookmark {
+  tempTitle: string;
+  tempUrl: string;
+  tempDescription: string;
+  tempFavicon: string;
 }
 
 // 图标组件
@@ -325,12 +325,49 @@ export default function AdminPage() {
     }
   };
 
-  // 注意：编辑功能暂时禁用，因为当前 API 不支持更新操作
-  const startEditing = (_bookmark: Bookmark) => {
-    setAutoMessage('⚠️ 编辑功能暂时禁用，请删除后重新添加', 'info');
+  // 开始编辑书签
+  const startEditing = (bookmark: Bookmark) => {
+    setEditingBookmark({
+      ...bookmark,
+      tempTitle: bookmark.title,
+      tempUrl: bookmark.url,
+      tempDescription: bookmark.description || '',
+      tempFavicon: bookmark.favicon || ''
+    });
+    setAutoMessage('正在编辑书签', 'info');
   };
-  const saveEdit = () => {};
-  const cancelEdit = () => {};
+
+  // 保存编辑
+  const saveEdit = async () => {
+    if (!editingBookmark) return;
+
+    setIsLoading(true);
+    try {
+      await updateBookmark({
+        id: editingBookmark.id,
+        title: editingBookmark.tempTitle || editingBookmark.title,
+        url: editingBookmark.tempUrl || editingBookmark.url,
+        description: editingBookmark.tempDescription || editingBookmark.description,
+        favicon: editingBookmark.tempFavicon || editingBookmark.favicon
+      });
+
+      // 刷新书签列表
+      await loadBookmarks();
+
+      setAutoMessage('✅ 书签更新成功', 'success');
+      cancelEdit();
+    } catch (error) {
+      console.error('编辑书签失败：', error);
+      setAutoMessage('❌ 编辑书签失败', 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 取消编辑
+  const cancelEdit = () => {
+    setEditingBookmark(null);
+  };
 
   // ===== 数据处理 =====
 
@@ -407,14 +444,14 @@ export default function AdminPage() {
             <div className="space-y-3">
               <input
                 type="text"
-                value={editingBookmark.title}
-                onChange={(e) => setEditingBookmark({ ...editingBookmark, title: e.target.value })}
+                value={editingBookmark.tempTitle}
+                onChange={(e) => setEditingBookmark({ ...editingBookmark, tempTitle: e.target.value })}
                 className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:outline-none"
               />
               <input
                 type="url"
-                value={editingBookmark.url}
-                onChange={(e) => setEditingBookmark({ ...editingBookmark, url: e.target.value })}
+                value={editingBookmark.tempUrl}
+                onChange={(e) => setEditingBookmark({ ...editingBookmark, tempUrl: e.target.value })}
                 className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:outline-none"
               />
             </div>
@@ -518,8 +555,8 @@ export default function AdminPage() {
                 {editingBookmark?.id === bookmark.id ? (
                   <input
                     type="text"
-                    value={editingBookmark.title}
-                    onChange={(e) => setEditingBookmark({ ...editingBookmark, title: e.target.value })}
+                    value={editingBookmark.tempTitle}
+                    onChange={(e) => setEditingBookmark({ ...editingBookmark, tempTitle: e.target.value })}
                     className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:outline-none"
                   />
                 ) : (
@@ -534,8 +571,8 @@ export default function AdminPage() {
                 {editingBookmark?.id === bookmark.id ? (
                   <input
                     type="url"
-                    value={editingBookmark.url}
-                    onChange={(e) => setEditingBookmark({ ...editingBookmark, url: e.target.value })}
+                    value={editingBookmark.tempUrl}
+                    onChange={(e) => setEditingBookmark({ ...editingBookmark, tempUrl: e.target.value })}
                     className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:outline-none"
                   />
                 ) : (

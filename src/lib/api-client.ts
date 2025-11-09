@@ -87,6 +87,41 @@ export async function addBookmark(bookmark: {
   }
 }
 
+// 更新书签
+export async function updateBookmark(bookmark: {
+  id: string;
+  title: string;
+  url: string;
+  description?: string;
+  favicon?: string;
+}): Promise<Bookmark> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/bookmarks`, {
+      method: 'PUT',
+      headers: {
+        'x-api-key': API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookmark),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result: ApiResponse<Bookmark> = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || '更新书签失败');
+    }
+
+    return result.data!;
+  } catch (error) {
+    console.error('更新书签失败：', error);
+    throw error;
+  }
+}
+
 // 删除书签
 export async function deleteBookmark(id: string): Promise<void> {
   try {

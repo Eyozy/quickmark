@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { randomUUID } from 'crypto';
 
 // 使用服务端密钥（不暴露给前端）
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseServiceKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // 创建服务端客户端
 if (!supabaseUrl || !supabaseServiceKey) {
@@ -84,7 +85,7 @@ export async function POST(request: NextRequest) {
         url: url.trim(),
         description: description?.trim() || '',
         favicon: favicon || '',
-        user_id: 'default-user',
+        user_id: randomUUID(), // 生成有效的 UUID
         created_at: new Date().toISOString()
       }])
       .select();
@@ -98,6 +99,53 @@ export async function POST(request: NextRequest) {
       success: true,
       data: data[0],
       message: '书签添加成功'
+    });
+
+  } catch (error) {
+    console.error('API 错误：', error);
+    return NextResponse.json({ error: '服务器错误' }, { status: 500 });
+  }
+}
+
+// 更新书签
+export async function PUT(request: NextRequest) {
+  try {
+    // 验证 API 密钥
+    if (!verifyApiKey(request)) {
+      return NextResponse.json({ error: '未授权访问' }, { status: 401 });
+    }
+
+    const { id, title, url, description, favicon } = await request.json();
+
+    // 验证必需字段
+    if (!id || !title || !url) {
+      return NextResponse.json({ error: 'ID、标题和 URL 是必需的' }, { status: 400 });
+    }
+
+    const { data, error } = await supabase
+      .from('bookmarks')
+      .update({
+        title: title.trim(),
+        url: url.trim(),
+        description: description?.trim() || '',
+        favicon: favicon || ''
+      })
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      console.error('更新书签失败：', error);
+      return NextResponse.json({ error: '更新书签失败' }, { status: 500 });
+    }
+
+    if (!data || data.length === 0) {
+      return NextResponse.json({ error: '书签不存在' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: data[0],
+      message: '书签更新成功'
     });
 
   } catch (error) {
