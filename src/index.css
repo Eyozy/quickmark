@@ -1,0 +1,402 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+
+  /* ===== shadcn/ui 风格配色系统 ===== */
+  /* 主色调 - Slate 系列，专业且适合书签管理 */
+  --primary: 222.2 84% 4.9%; /* slate-900 */
+  --primary-foreground: 210 40% 98%; /* slate-50 */
+
+  --secondary: 210 40% 96%; /* slate-100 */
+  --secondary-foreground: 222.2 84% 4.9%; /* slate-900 */
+
+  --muted: 210 40% 96%; /* slate-100 */
+  --muted-foreground: 215.4 16.3% 46.9%; /* slate-500 */
+
+  --accent: 210 40% 96.1%; /* slate-100 */
+  --accent-foreground: 222.2 84% 4.9%; /* slate-900 */
+
+  --destructive: 0 84.2% 60.2%; /* red-500 */
+  --destructive-foreground: 210 40% 98%; /* slate-50 */
+
+  /* 中性色系列 - 专为书签网站优化 */
+  --neutral-50: #f8fafc;
+  --neutral-100: #f1f5f9;
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1e293b;
+  --neutral-900: #0f172a;
+  --neutral-950: #020617;
+
+  /* 书签网站专用语义色 */
+  --bookmark-primary: 220.9 39.3% 11%; /* 书签主色 - 深 slate */
+  --bookmark-secondary: 214.3 31.8% 91.4%; /* 书签辅助色 - 浅 slate */
+  --bookmark-accent: 217.2 91.2% 59.8%; /* 书签强调色 - 蓝色 */
+
+  --bookmark-success: 142.1 76.2% 36.3%; /* 成功状态 - 绿色 */
+  --bookmark-warning: 32.1 95% 44.1%; /* 警告状态 - 橙色 */
+  --bookmark-error: 0 84.2% 60.2%; /* 错误状态 - 红色 */
+  --bookmark-info: 198.6 88.7% 48.4%; /* 信息状态 - 天蓝色 */
+
+  /* 背景色阶 - 专为书签管理优化 */
+  --background-primary: #ffffff;
+  --background-secondary: var(--neutral-50);
+  --background-tertiary: var(--neutral-100);
+  --background-card: #ffffff;
+  --background-hover: var(--neutral-50);
+  --background-active: var(--neutral-100);
+
+  /* 文本色阶 - 优化阅读体验 */
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-700);
+  --text-tertiary: var(--neutral-500);
+  --text-quaternary: var(--neutral-400);
+  --text-inverse: #ffffff;
+
+  /* 分割线和边框色 */
+  --border-primary: var(--neutral-200);
+  --border-secondary: var(--neutral-100);
+  --border-strong: var(--neutral-300);
+  --divider: var(--neutral-200);
+
+  /* 填充颜色 - 创建视觉层次 */
+  --fill-primary: rgba(15, 23, 42, 0.05);
+  --fill-secondary: rgba(15, 23, 42, 0.02);
+  --fill-tertiary: rgba(15, 23, 42, 0.01);
+  --fill-accent: rgba(59, 130, 246, 0.1);
+
+  /* 8pt 网格系统 - 保持一致性 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* 现代圆角系统 */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+
+  /* 现代阴影系统 */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* shadcn/ui 统一颜色系统 - 移除 Apple 颜色冲突 */
+  /* 书签网站专用系统色 - 符合 shadcn 规范 */
+  --system-blue: var(--bookmark-accent);
+  --system-green: var(--bookmark-success);
+  --system-orange: var(--bookmark-warning);
+  --system-red: var(--bookmark-error);
+  --system-gray: var(--neutral-400);
+  --system-gray3: var(--neutral-300);
+  --system-blue-light: var(--bookmark-accent);
+  --separator-opaque: var(--border-primary);
+  --separator-non-opaque: var(--border-secondary);
+  --shadow-subtle: var(--shadow-sm);
+  --shadow-medium: var(--shadow-md);
+  --shadow-large: var(--shadow-lg);
+  --fill-quaternary: var(--background-tertiary);
+
+  /* 现代动效系统 */
+  --easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --easing-out: cubic-bezier(0, 0, 0.2, 1);
+  --easing-in: cubic-bezier(0.4, 0, 1, 1);
+
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617;
+    --foreground: #f8fafc;
+
+    /* shadcn/ui 深色模式配色 */
+    --primary: 222.2 84% 4.9%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* 深色模式书签网站配色 */
+    --background-primary: #020617;
+    --background-secondary: var(--neutral-900);
+    --background-tertiary: var(--neutral-800);
+    --background-card: #1e293b;
+    --background-hover: var(--neutral-800);
+    --background-active: var(--neutral-700);
+
+    --text-primary: var(--neutral-50);
+    --text-secondary: var(--neutral-200);
+    --text-tertiary: var(--neutral-400);
+    --text-quaternary: var(--neutral-500);
+    --text-inverse: var(--neutral-900);
+
+    --border-primary: var(--neutral-800);
+    --border-secondary: var(--neutral-700);
+    --border-strong: var(--neutral-600);
+    --divider: var(--neutral-700);
+
+    --fill-primary: rgba(248, 250, 252, 0.05);
+    --fill-secondary: rgba(248, 250, 252, 0.02);
+    --fill-tertiary: rgba(248, 250, 252, 0.01);
+    --fill-accent: rgba(59, 130, 246, 0.2);
+
+    /* 深色模式阴影调整 */
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+  }
+}
+
+/* 苹果卡片样式 */
+.apple-card {
+  background: var(--background-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-subtle);
+  transition: all var(--duration-normal) var(--easing-standard);
+  border: 1px solid var(--separator-non-opaque);
+}
+
+.apple-card:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+
+/* 苹果输入框样式 */
+.apple-input {
+  background: var(--background-secondary);
+  border: 1px solid var(--separator-non-opaque);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 0; /* 只设置垂直内边距 */
+  transition: all var(--duration-fast) var(--easing-standard);
+  outline: none;
+  width: 100%; /* 确保宽度正常 */
+}
+
+.apple-input:focus {
+  border-color: var(--system-blue);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* 苹果复选框样式 */
+.apple-checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--system-gray);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  position: relative;
+  transition: all var(--duration-fast) var(--easing-standard);
+  cursor: pointer;
+}
+
+.apple-checkbox:checked {
+  background: var(--system-blue);
+  border-color: var(--system-blue);
+}
+
+.apple-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  background: none;
+}
+
+/* shadcn/ui 按钮层级系统 - 符合 HIG 操作优先级原则 */
+.apple-button {
+  transition: all var(--duration-fast) var(--easing-standard);
+  border: none;
+  outline: none;
+  position: relative;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  background: var(--background-tertiary); /* 默认背景色，防止白色背景 */
+  color: var(--text-primary);
+}
+
+.apple-button:hover {
+  transform: scale(1.02);
+  opacity: 0.9;
+}
+
+.apple-button:active {
+  transform: scale(0.98);
+}
+
+.apple-button:focus {
+  outline: 2px solid var(--system-blue);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* 主要按钮 - 编辑操作（增强可访问性） */
+.apple-button.btn-primary {
+  background: hsl(217.2, 91.2%, 59.8%) !important; /* 强制蓝色背景，防止白色 */
+  color: white !important;
+  border: 1px solid hsl(217.2, 91.2%, 49.8%) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1) !important;
+  min-height: 44px; /* 符合最小点击区域 */
+  min-width: 44px;
+  font-size: 16px; /* 避免缩放 */
+}
+
+.apple-button.btn-primary:hover {
+  background: hsl(217.2, 91.2%, 54%) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+  opacity: 1 !important;
+}
+
+/* 幽灵按钮 - 非关键操作（增强可访问性） */
+.apple-button.btn-ghost {
+  background: var(--background-tertiary) !important; /* 强制背景色，防止白色 */
+  color: var(--text-tertiary) !important;
+  border: 1px solid var(--border-secondary) !important;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.apple-button.btn-ghost:hover {
+  background: var(--background-hover) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-primary) !important;
+  opacity: 1 !important;
+}
+
+/* 退出登录按钮 hover 效果 */
+.apple-button.btn-ghost.btn-logout:hover {
+  background: #dc2626 !important; /* 红色背景 */
+  color: white !important; /* 白色文字 */
+  border-color: #dc2626 !important; /* 红色边框 */
+}
+
+/* 次要按钮 - 访问操作 */
+.apple-button.btn-secondary {
+  background: var(--background-tertiary) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-secondary) !important;
+}
+
+.apple-button.btn-secondary:hover {
+  background: var(--background-hover) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-primary) !important;
+  opacity: 1 !important;
+}
+
+/* 危险按钮 - 删除操作 */
+.apple-button.btn-danger {
+  background: hsl(0, 84.2%, 60.2%) !important; /* 强制红色背景，防止白色 */
+  color: white !important;
+  border: 1px solid hsl(0, 84.2%, 50.2%) !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.apple-button.btn-danger:hover {
+  background: hsl(0, 84.2%, 54%) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1) !important;
+  opacity: 1 !important;
+}
+
+.apple-button.btn-danger:active {
+  transform: scale(0.95);
+}
+
+/* 现代加载动画效果 */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%);
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* 现代进度条动画 */
+.progress-bar-animated {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-animated::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+}
+
+code, pre {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}

@@ -2,8 +2,6 @@
 
 **极简个人书签管理工具**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Next.js](https://img.shields.io/badge/Next.js-16.0-black.svg)](https://nextjs.org/) [![React](https://img.shields.io/badge/React-19.2-blue.svg)](https://reactjs.org/)
-
 ## ✨ 特性
 
 - **智能管理** - 自动获取网站标题和图标
