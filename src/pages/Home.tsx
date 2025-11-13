@@ -79,7 +79,7 @@ export default function Home() {
           <div className="w-full max-w-3xl mx-auto mb-6">
             <div className="relative group">
               <Search
-                className="absolute left-5 top-1/2 transform -translate-y-1/2 z-10 w-5 h-5 text-gray-400 dark:text-gray-500"
+                className="absolute left-5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500"
                 aria-hidden="true"
               />
               <input
@@ -245,23 +245,35 @@ export default function Home() {
         )}
       </div>
 
-      {/* 页脚 - 始终在底部 */}
-      {!loading && bookmarks.length > 0 && (
-        <footer className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 border-t border-gray-200 bg-gray-50">
-          <div className="w-full max-w-6xl mx-auto flex justify-between items-center text-xs sm:text-sm lg:text-base text-gray-600">
-            <div>
-              显示 {resultCount} / {bookmarks.length} 个书签
-            </div>
-            <a
-              href="/admin"
-              className="inline-flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium"
-            >
-              <span>管理书签</span>
-              <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
-            </a>
+      {/* 页脚 */}
+      <footer className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="w-full max-w-6xl mx-auto flex justify-center items-center">
+          <div className="text-center">
+            <p className="text-xs sm:text-sm lg:text-base text-gray-500">
+              © {new Date().getFullYear()} QuickMark. Reserved by{' '}
+              <a
+                href="https://github.com/Eyozy/quickmark/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-gray-800 transition-all duration-300 relative inline-block group"
+              >
+                <span className="relative z-10">Eyozy</span>
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-gray-800 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              {' '}· Inspired by{' '}
+              <a
+                href="https://github.com/darekkay/static-marks"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-gray-800 transition-all duration-300 relative inline-block group"
+              >
+                <span className="relative z-10">Static Marks</span>
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-gray-800 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            </p>
           </div>
-        </footer>
-      )}
+        </div>
+      </footer>
     </div>
   );
 }
