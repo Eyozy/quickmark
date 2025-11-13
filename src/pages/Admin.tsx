@@ -335,7 +335,7 @@ ${bookmarks.map(bookmark => `
         }
 
         const bookmarksToImport: ImportedBookmark[] = [];
-        anchorTags.forEach((a: HTMLAnchorElement) => {
+        anchorTags.forEach((a: HTMLAnchorElement & { icon?: string }) => {
           const url = a.href;
           const title = a.textContent || '';
           if (url && title && !url.startsWith('javascript:')) {
@@ -354,7 +354,14 @@ ${bookmarks.map(bookmark => `
         }
 
         for (const bookmark of bookmarksToImport) {
-          await addBookmark(bookmark);
+          if (bookmark.title && bookmark.url) {
+            await addBookmark({
+              title: bookmark.title,
+              url: bookmark.url,
+              description: bookmark.description,
+              favicon: bookmark.favicon
+            });
+          }
         }
 
       } else {
