@@ -4,8 +4,8 @@ const dotenv = require('dotenv');
 const { createClient } = require('@supabase/supabase-js');
 const { randomUUID } = require('crypto');
 
-// 加载环境变量
-dotenv.config();
+// 加载环境变量 - 优先使用 .env.local（本地开发），如果不存在则使用系统环境变量（Vercel 部署）
+dotenv.config({ path: '.env.local' });
 
 const app = express();
 const PORT = process.env.API_PORT || 3001;

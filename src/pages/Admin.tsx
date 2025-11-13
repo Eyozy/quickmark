@@ -681,7 +681,8 @@ ${bookmarks.map(bookmark => `
               <button
                 onClick={() => {
                   localStorage.removeItem('authenticated');
-                  window.location.href = '/';
+                  localStorage.removeItem('authTime');
+                  window.location.href = '/login';
                 }}
                 className="px-2 py-1.5 sm:px-4 sm:py-2 bg-gray-200 hover:bg-red-500 hover:text-white text-gray-700 rounded-lg text-xs sm:text-sm font-medium inline-flex items-center space-x-1 sm:space-x-2 transition-colors"
               >
