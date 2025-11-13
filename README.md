@@ -75,8 +75,8 @@ cp .env.local.example .env.local
 
 ```env
 # Supabase 配置
-NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_ANON_KEY=your-anon-public-key
 
 # 管理员密码
 ADMIN_PASSWORD=your_secure_admin_password
