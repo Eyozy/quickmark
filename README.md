@@ -18,7 +18,9 @@
 
 ### 🛡️ 安全特性
 - **API 密钥认证** - 使用安全密钥保护 API 访问
-- **管理员认证** - 密码保护的管理后台
+- **管理员认证** - 密码保护的管理后台，必须登录才能访问
+- **会话管理** - 登录状态有效期 1 小时，自动过期
+- **路由保护** - 未认证用户自动跳转到登录页面
 - **CORS 保护** - 跨域请求安全控制
 - **数据验证** - 严格的输入验证和错误处理
 
@@ -29,6 +31,7 @@ quickmark/
 ├── src/
 │   ├── pages/                 # 页面组件
 │   │   ├── Home.tsx           # 首页 - 书签展示和搜索
+│   │   ├── Login.tsx          # 登录页面 - 管理员认证
 │   │   └── Admin.tsx          # 管理后台 - CRUD 操作
 │   ├── components/            # 可复用组件
 │   │   └── FaviconIcon.tsx    # 网站图标组件
@@ -74,13 +77,24 @@ cp .env.local.example .env.local
 编辑 `.env.local` 文件：
 
 ```env
-# Supabase 配置
+# Supabase 配置（后端 API 使用）
 SUPABASE_URL=https://your-project-id.supabase.co
 SUPABASE_ANON_KEY=your-anon-public-key
 
-# 管理员密码
+# 管理员密码（用于登录 /login）
 ADMIN_PASSWORD=your_secure_admin_password
 ```
+
+**重要说明：**
+- **SUPABASE_URL 和 SUPABASE_ANON_KEY**：
+  - 本地开发：`server.cjs`（本地 API 服务器）使用
+  - 部署环境：Vercel Serverless Functions 使用
+  - 两个环境使用相同的变量名
+
+- **ADMIN_PASSWORD**：
+  - 用于登录 `/login` 页面，访问 `/admin` 管理后台
+  - 登录状态有效期 1 小时
+  - 请设置强密码（至少 12 位，包含大小写字母、数字和符号）
 
 ### 4. 创建数据库
 
@@ -110,17 +124,25 @@ CREATE POLICY "Service access only" ON bookmarks
 
 ### 5. 启动开发服务器
 
-```bash
-# 启动前端开发服务器（端口 5173）
-npm run dev
+**重要：必须同时启动前端和 API 服务器**
 
-# 或者同时启动 API 服务器（本地开发用）
+```bash
+# 启动完整开发环境（前端 + API 服务器）
 npm run dev:full
 ```
 
-访问应用：
-- **首页**：[http://localhost:5173](http://localhost:5173) - 公开访问
-- **管理后台**：[http://localhost:5173/admin](http://localhost:5173/admin) - 需要密码
+这个命令会同时启动：
+- 前端 Vite 服务器（默认端口 5173，如果被占用会自动使用其他端口）
+- 后端 API 服务器（端口 3001）
+
+访问应用（端口号以实际启动的为准）：
+- **首页**：[http://localhost:5173](http://localhost:5173) - 公开访问，查看所有书签
+- **登录页面**：[http://localhost:5173/login](http://localhost:5173/login) - 使用环境变量中的密码登录
+- **管理后台**：[http://localhost:5173/admin](http://localhost:5173/admin) - 需要先登录才能访问
+
+**常见问题：**
+- 如果看到"登录失败，请检查 API 服务器是否启动"，说明只启动了前端，请使用 `npm run dev:full`
+- 如果端口被占用，Vite 会自动使用下一个可用端口（如 5174、5175 等）
 
 ## 🚀 部署
 
@@ -139,12 +161,18 @@ npm run dev:full
    - Vercel 会自动检测 Vite 项目
 
 3. **配置环境变量**
-   在 Vercel Dashboard → Project Settings → Environment Variables 中添加：
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
-   ADMIN_PASSWORD=your_secure_admin_password
-   ```
+   在 Vercel Dashboard → Project Settings → Environment Variables 中添加以下变量：
+
+   | 变量名 | 说明 | 环境 |
+   |--------|------|------|
+   | `SUPABASE_URL` | Supabase 项目 URL | Production, Preview, Development |
+   | `SUPABASE_ANON_KEY` | Supabase 匿名密钥 | Production, Preview, Development |
+   | `ADMIN_PASSWORD` | 管理员密码 | Production, Preview, Development |
+
+   **注意：**
+   - 所有环境变量都必须同时添加到 Production、Preview 和 Development 环境
+   - Vercel 会自动将这些变量注入到 Serverless Functions（api/*.ts）中
+   - 无需 `NEXT_PUBLIC_` 前缀，因为这些变量只在后端使用
 
 4. **自动部署**
    推送代码后会自动触发部署
