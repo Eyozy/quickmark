@@ -6,6 +6,15 @@ import { getBookmarks, addBookmark, updateBookmark, deleteBookmark } from '../li
 import FaviconIcon from '../components/FaviconIcon';
 import type { Bookmark } from '../lib/api-client';
 
+interface ImportedBookmark {
+  title?: string;
+  url?: string;
+  description?: string;
+  favicon?: string;
+}
+
+type ExportFormat = 'json' | 'csv' | 'html';
+
 export default function Admin() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,6 +86,7 @@ export default function Admin() {
   
   useEffect(() => {
     loadBookmarks();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   
@@ -121,7 +131,7 @@ export default function Admin() {
 
       if (!title) {
         try {
-          const response = await fetch('http://localhost:3001/api/fetch-metadata', {
+          const response = await fetch('/api/fetch-metadata', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -135,7 +145,7 @@ export default function Admin() {
             favicon = metadata.data.favicon;
             description = metadata.data.description;
           }
-        } catch (error) {
+        } catch {
           console.warn('获取网站信息失败，使用默认标题');
           try {
             const urlObj = new URL(url);
@@ -205,7 +215,7 @@ export default function Admin() {
   /**
    * 导出书签功能
    */
-  const handleExportBookmarks = (format: 'json' | 'csv' | 'html' = 'json') => {
+  const handleExportBookmarks = (format: ExportFormat = 'json') => {
     let content: string;
     let contentType: string;
     let fileName: string;
@@ -217,7 +227,7 @@ export default function Admin() {
         fileName = `bookmarks-${new Date().toISOString().slice(0, 10)}.json`;
         break;
 
-      case 'csv':
+      case 'csv': {
         if (bookmarks.length === 0) {
           showMessage('没有书签可以导出', 'error');
           return;
@@ -235,8 +245,9 @@ export default function Admin() {
         contentType = 'text/csv';
         fileName = `bookmarks-${new Date().toISOString().slice(0, 10)}.csv`;
         break;
+      }
 
-      case 'html':
+      case 'html': {
         if (bookmarks.length === 0) {
           showMessage('没有书签可以导出', 'error');
           return;
@@ -260,6 +271,7 @@ ${bookmarks.map(bookmark => `
         contentType = 'text/html';
         fileName = `bookmarks-${new Date().toISOString().slice(0, 10)}.html`;
         break;
+      }
 
       default:
         content = JSON.stringify(bookmarks, null, 2);
@@ -294,7 +306,7 @@ ${bookmarks.map(bookmark => `
         const content = await file.text();
         const importedBookmarks = JSON.parse(content);
 
-        const validBookmarks = importedBookmarks.filter((bookmark: any) => bookmark.url && bookmark.title);
+        const validBookmarks = importedBookmarks.filter((bookmark: ImportedBookmark) => bookmark.url && bookmark.title);
 
         if (validBookmarks.length === 0) {
           showMessage('没有有效的书签可以导入', 'error');
@@ -322,8 +334,8 @@ ${bookmarks.map(bookmark => `
           return;
         }
 
-        const bookmarksToImport: any[] = [];
-        anchorTags.forEach((a: any) => {
+        const bookmarksToImport: ImportedBookmark[] = [];
+        anchorTags.forEach((a: HTMLAnchorElement) => {
           const url = a.href;
           const title = a.textContent || '';
           if (url && title && !url.startsWith('javascript:')) {
@@ -815,11 +827,11 @@ ${bookmarks.map(bookmark => `
 
                   {showImportExport && (
                     <div className="absolute right-0 z-10 w-24 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg sm:w-32 dark:bg-gray-800 dark:border-gray-600">
-                      {['json', 'csv', 'html'].map((format) => (
+                      {(['json', 'csv', 'html'] as ExportFormat[]).map((format) => (
                         <button
                           key={format}
                           onClick={() => {
-                            handleExportBookmarks(format as any);
+                            handleExportBookmarks(format);
                             setShowImportExport(false);
                           }}
                           className="block w-full px-3 py-2 text-xs text-left sm:px-4 sm:text-sm hover:bg-gray-100 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg"

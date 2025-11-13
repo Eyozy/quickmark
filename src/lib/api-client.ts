@@ -1,5 +1,5 @@
 // API 客户端 - 替代直接的 Supabase 客户端
-// 使用相对路径利用 Vite 代理配置
+// 使用相对路径，兼容开发和 Vercel 部署
 const API_BASE_URL = '';
 
 const API_KEY = 'quickmark-secure-api-2025';
@@ -13,7 +13,7 @@ export interface Bookmark {
   created_at?: string;
 }
 
-interface ApiResponse<T = any> {
+interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;

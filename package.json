@@ -7,7 +7,8 @@
     "dev": "vite",
     "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
     "server": "node server.cjs",
-    "build": "tsc -b && vite build",
+    "build": "tsc && vite build",
+    "vercel-build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -29,6 +30,7 @@
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@vercel/node": "^3.2.29",
     "@vitejs/plugin-react": "^5.1.0",
     "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
