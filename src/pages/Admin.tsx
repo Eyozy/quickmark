@@ -662,9 +662,6 @@ ${bookmarks.map(bookmark => `
                 <h1 className="text-lg font-semibold text-gray-900 sm:text-2xl dark:text-gray-100">
                   QuickMark 管理
                 </h1>
-                <p className="hidden text-xs text-gray-500 sm:text-sm dark:text-gray-400 sm:block">
-                  书签管理中心
-                </p>
               </div>
             </div>
 

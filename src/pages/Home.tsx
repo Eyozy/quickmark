@@ -54,8 +54,8 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-950">
       {/* 苹果风格导航栏 */}
-      <header className="w-full border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="sticky top-0 z-10 w-full border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl">
+        <div className="px-4 py-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <img src="/favicon.svg" alt="QuickMark" className="w-10 h-10" />
@@ -63,23 +63,20 @@ export default function Home() {
                 <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
                   QuickMark
                 </h1>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  个人极简书签中心
-                </p>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-12">
+      <div className="flex-1 w-full px-4 py-12 sm:px-6 lg:px-8">
         {/* 苹果风格搜索区域 */}
-        <div className="text-center mb-12">
+        <div className="mb-12 text-center">
           {/* 响应式搜索框 */}
           <div className="w-full max-w-3xl mx-auto mb-6">
             <div className="relative group">
               <Search
-                className="absolute left-5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500"
+                className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-5 top-1/2 dark:text-gray-500"
                 aria-hidden="true"
               />
               <input
@@ -87,13 +84,13 @@ export default function Home() {
                 placeholder="搜索书签标题或网址..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-14 pr-14 py-4 text-lg border border-gray-300 dark:border-gray-600 rounded-2xl bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm focus:shadow-md transition-all"
+                className="w-full py-4 text-lg text-gray-900 transition-all bg-white border border-gray-300 shadow-sm pl-14 pr-14 dark:border-gray-600 rounded-2xl dark:bg-gray-700 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:shadow-md"
                 aria-label="搜索书签"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-5 top-1/2 transform -translate-y-1/2 p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors z-10"
+                  className="absolute z-10 p-2 text-gray-400 transition-colors transform -translate-y-1/2 rounded-lg right-5 top-1/2 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
                   aria-label="清除搜索"
                 >
                   <X className="w-4 h-4" />
@@ -126,10 +123,10 @@ export default function Home() {
 
         {/* 苹果风格加载状态 */}
         {loading ? (
-          <div className="flex justify-center items-center py-20">
+          <div className="flex items-center justify-center py-20">
             <div className="text-center">
               <div
-                className="animate-spin rounded-full h-12 w-12 mx-auto mb-6"
+                className="w-12 h-12 mx-auto mb-6 rounded-full animate-spin"
                 style={{
                   border: '3px solid var(--background-tertiary)',
                   borderTop: '3px solid var(--system-blue)'
@@ -141,12 +138,12 @@ export default function Home() {
         ) : (
           <>
             {/* 响应式书签网格 */}
-            <div className="w-full max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="w-full mx-auto max-w-7xl">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredBookmarks.map((bookmark) => (
                   <article
                     key={bookmark.id}
-                    className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 group hover:shadow-lg transition-all duration-200 cursor-pointer hover:-translate-y-1 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+                    className="p-6 transition-all duration-200 bg-white border border-gray-200 cursor-pointer dark:bg-gray-800 rounded-2xl dark:border-gray-700 group hover:shadow-lg hover:-translate-y-1 focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
                   >
                     <a
                       href={bookmark.url}
@@ -157,7 +154,7 @@ export default function Home() {
                     >
                       <div className="flex items-start space-x-3 sm:space-x-4">
                         {/* 响应式图标 */}
-                        <div className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                        <div className="flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 border border-gray-200 shrink-0 rounded-xl dark:bg-gray-700 dark:border-gray-600">
                           {(() => {
                             const faviconUrl = bookmark.favicon || getFaviconUrl(bookmark.url);
                             const fallbackLetter = getFaviconFallback(bookmark.url);
@@ -178,7 +175,7 @@ export default function Home() {
                                 style={{ display: 'block' }}
                               />
                             ) : (
-                              <span className="text-gray-400 text-base font-medium">
+                              <span className="text-base font-medium text-gray-400">
                                 {fallbackLetter}
                               </span>
                             );
@@ -189,15 +186,15 @@ export default function Home() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
                             <h3
-                              className="text-sm sm:text-base lg:text-lg font-medium text-gray-900 dark:text-gray-100 truncate group-hover:text-blue-600 transition-colors"
+                              className="text-sm font-medium text-gray-900 truncate transition-colors sm:text-base lg:text-lg dark:text-gray-100 group-hover:text-blue-600"
                               title={bookmark.title}
                             >
                               {bookmark.title}
                             </h3>
-                            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 ml-2 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
+                            <ExternalLink className="w-3 h-3 ml-2 text-gray-400 transition-opacity opacity-0 sm:w-4 sm:h-4 shrink-0 group-hover:opacity-100" aria-hidden="true" />
                           </div>
                           <p
-                            className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate mt-1"
+                            className="mt-1 text-xs text-gray-500 truncate sm:text-sm dark:text-gray-400"
                             title={bookmark.url}
                           >
                             {bookmark.url}
@@ -212,27 +209,27 @@ export default function Home() {
 
             {/* 空状态 */}
             {filteredBookmarks.length === 0 && (
-              <div className="w-full max-w-7xl mx-auto text-center py-12 sm:py-16 lg:py-20">
+              <div className="w-full py-12 mx-auto text-center max-w-7xl sm:py-16 lg:py-20">
                 {searchTerm ? (
                   <>
-                    <div className="text-gray-400 text-4xl sm:text-5xl lg:text-6xl mb-4 sm:mb-6">🔍</div>
-                    <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-gray-900 mb-2 sm:mb-4">没有找到匹配的书签</h3>
-                    <p className="text-sm sm:text-base lg:text-lg text-gray-600 mb-4 sm:mb-6">尝试使用不同的关键词搜索</p>
+                    <div className="mb-4 text-4xl text-gray-400 sm:text-5xl lg:text-6xl sm:mb-6">🔍</div>
+                    <h3 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl lg:text-2xl sm:mb-4">没有找到匹配的书签</h3>
+                    <p className="mb-4 text-sm text-gray-600 sm:text-base lg:text-lg sm:mb-6">尝试使用不同的关键词搜索</p>
                     <button
                       onClick={() => setSearchTerm('')}
-                      className="text-blue-600 hover:text-blue-700 font-medium text-sm sm:text-base lg:text-lg"
+                      className="text-sm font-medium text-blue-600 hover:text-blue-700 sm:text-base lg:text-lg"
                     >
                       清除搜索条件
                     </button>
                   </>
                 ) : (
                   <>
-                    <div className="text-gray-400 text-4xl sm:text-5xl lg:text-6xl mb-4 sm:mb-6">📚</div>
-                    <h3 className="text-lg sm:text-xl lg:text-2xl font-medium text-gray-900 mb-2 sm:mb-4">还没有任何书签</h3>
-                    <p className="text-sm sm:text-base lg:text-lg text-gray-600 mb-6 sm:mb-8">开始添加你的第一个书签吧！</p>
+                    <div className="mb-4 text-4xl text-gray-400 sm:text-5xl lg:text-6xl sm:mb-6">📚</div>
+                    <h3 className="mb-2 text-lg font-medium text-gray-900 sm:text-xl lg:text-2xl sm:mb-4">还没有任何书签</h3>
+                    <p className="mb-6 text-sm text-gray-600 sm:text-base lg:text-lg sm:mb-8">开始添加你的第一个书签吧！</p>
                     <a
                       href="/admin"
-                      className="inline-flex items-center space-x-2 bg-blue-600 text-white px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4 rounded-xl font-medium hover:bg-blue-700 transition-colors text-sm sm:text-base lg:text-lg"
+                      className="inline-flex items-center px-4 py-2 space-x-2 text-sm font-medium text-white transition-colors bg-blue-600 sm:px-6 lg:px-8 sm:py-3 lg:py-4 rounded-xl hover:bg-blue-700 sm:text-base lg:text-lg"
                     >
                       <span>添加书签</span>
                               <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
@@ -246,29 +243,29 @@ export default function Home() {
       </div>
 
       {/* 页脚 */}
-      <footer className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="w-full max-w-6xl mx-auto flex justify-center items-center">
+      <footer className="w-full px-4 py-6 sm:px-6 lg:px-8 sm:py-8">
+        <div className="flex items-center justify-center w-full max-w-6xl mx-auto">
           <div className="text-center">
-            <p className="text-xs sm:text-sm lg:text-base text-gray-500">
+            <p className="text-xs text-gray-500 sm:text-sm lg:text-base">
               © {new Date().getFullYear()} QuickMark. Reserved by{' '}
               <a
                 href="https://github.com/Eyozy/quickmark/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-800 transition-all duration-300 relative inline-block group"
+                className="relative inline-block text-gray-600 transition-all duration-300 hover:text-gray-800 group"
               >
                 <span className="relative z-10">Eyozy</span>
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-gray-800 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-px transition-all duration-300 bg-gray-800 group-hover:w-full"></span>
               </a>
               {' '}· Inspired by{' '}
               <a
                 href="https://github.com/darekkay/static-marks"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-800 transition-all duration-300 relative inline-block group"
+                className="relative inline-block text-gray-600 transition-all duration-300 hover:text-gray-800 group"
               >
                 <span className="relative z-10">Static Marks</span>
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-gray-800 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-px transition-all duration-300 bg-gray-800 group-hover:w-full"></span>
               </a>
             </p>
           </div>
